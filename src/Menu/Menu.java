@@ -8,26 +8,28 @@ import Exception.IllegalPetException;
 import Exception.ExoticPetException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class Menu {
+    Store store = new Store();
     public Menu() {
         try {
             // Se hardcodean mascotas para mostrar funcionalidad.
-            Store.registerPet(KindE.SNAKE, "Serpentina", LocalDate.parse("2024-04-01"), "Verde", 4.10);
-            Store.registerPet(KindE.DOG, "Firulais", LocalDate.parse("2022-04-05"), "Negro", 6.14);
-            Store.registerPet(KindE.DOG, "Albondiga", LocalDate.parse("2014-11-12"), "Blanco", 6.24);
-            Store.registerPet(KindE.DOG, "Scooby doo", LocalDate.parse("2020-07-01"), "Café", 6.80);
-            Store.registerPet(KindE.CAT, "Gaturro", LocalDate.parse("1993-07-21"), "Naranja", 3.24);
-            Store.registerPet(KindE.CAT, "Macri", LocalDate.parse("1959-02-08"), "Gris", 3.10);
-            Store.registerPet(KindE.HAMSTER, "Pinky", LocalDate.parse("1990-08-12"), "Marrón", 0.94);
-            Store.registerPet(KindE.HAMSTER, "Cerebro", LocalDate.parse("1990-08-12"), "Blanco", 0.70);
-            Store.registerPet(KindE.DINOSAUR, "Mirta", LocalDate.parse("1700-01-12"), "Verde", 11740.15);
+            store.registerPet(KindE.SNAKE, "Serpentina", LocalDate.parse("2024-04-01"), "Verde", 4.10);
+            store.registerPet(KindE.DOG, "Firulais", LocalDate.parse("2022-04-05"), "Negro", 6.14);
+            store.registerPet(KindE.DOG, "Albondiga", LocalDate.parse("2014-11-12"), "Blanco", 6.24);
+            store.registerPet(KindE.DOG, "Scooby doo", LocalDate.parse("2020-07-01"), "Café", 6.80);
+            store.registerPet(KindE.CAT, "Gaturro", LocalDate.parse("1993-07-21"), "Naranja", 3.24);
+            store.registerPet(KindE.CAT, "Macri", LocalDate.parse("1959-02-08"), "Gris", 3.10);
+            store.registerPet(KindE.HAMSTER, "Pinky", LocalDate.parse("1990-08-12"), "Marrón", 0.94);
+            store.registerPet(KindE.HAMSTER, "Cerebro", LocalDate.parse("1990-08-12"), "Blanco", 0.70);
+            store.registerPet(KindE.DINOSAUR, "Mirta", LocalDate.parse("1700-01-12"), "Verde", 11740.15);
             Employee employee = this.register();
             this.mainMenu(employee);
         } catch (IllegalPetException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -66,21 +68,42 @@ public class Menu {
 
             switch (con.inInt("> Ingrese una de las opciones disponibles")) {
                 case 0:
-                    con.print("¡Hasta la próxima! :)");
                     exit = true;
+                    con.print("¡Hasta la próxima! :)");
                     break;
                 case 1:
+                    exit = true;
                     petMenu();
                     break;
                 case 2:
-                    //opcionB();
+                    exit = true;
+                    adoptionHistory();
+                    break;
+                case 3:
+                    exit = true;
+                    myProfile();
                     break;
                 default:
                     con.print("Opción inválida, intente nuevamente");
+                    break;
             }
 
         } while (!exit);
 
+    }
+
+    private void myProfile() {
+        Console con = new Console("Mi perfil");
+        Employee employee = Employee.getInstance();
+        do {
+            con.print(STR."""
+                    Nombre: \{employee.getName()}
+                    Apellido: \{employee.getLastName()}
+                    Cargo: \{employee.getRole()}
+                    Edad: \{employee.getAge()}
+                    """);
+        } while (!con.question("¿Desea volver?"));
+        mainMenu(employee);
     }
 
 
@@ -90,7 +113,7 @@ public class Menu {
         Predicate<Pet> filter = null;
 
         do {
-            List<Pet> pets = Store.showAvaiblePets(filter);
+            List<Pet> pets = store.showAvaiblePets(filter);
             con.printPetPresentation(pets);
 
             con.print("Seleccione una mascota para más opciones")
@@ -109,8 +132,8 @@ public class Menu {
                 case 1:
                     int petIndex = con.inInt("> ID de la mascota");
                     if (pets.size() >= petIndex) {
-                        showPetInfo(pets.get(petIndex));
                         exit = true;
+                        showPetInfo(pets.get(petIndex));
                     }
                     break;
                 case 2:
@@ -123,7 +146,7 @@ public class Menu {
 
                     switch (con.inInt("> Ingrese una de las opciones disponibles")) {
                         case 0:
-                            petMenu();
+                            exit = true;
                             break;
                         case 1:
                             con.print(STR."""
@@ -171,11 +194,12 @@ public class Menu {
                                 default -> con.print("Opción inválida, volverá a la lista.");
                             }
                             break;
+                        case 3:
+                            filter = null;
+                            break;
                         default:
                             con.print("Opción inválida, intente nuevamente");
                     }
-
-
                     break;
                 default:
                     con.print("Opción inválida, intente nuevamente");
@@ -190,26 +214,27 @@ public class Menu {
 
         do {
             con.printPetPresentation(pet);
-            con.print("Por favor, seleccione una opción:")
-                    .ln()
-                    .print("1. Adoptar :)")
-                    .ln()
-                    .print("0. Volver :(")
-                    .ln()
-                    .ln();
-
+            con.print("""
+                    Por favor, seleccione una opción:
+                    
+                    1. Adoptar :)
+                    
+                    0. Volver :(
+                    
+                    """);
             switch (con.inInt("> Ingrese una de las opciones disponibles")) {
                 case 0:
                     exit = true;
                     mainMenu(Employee.getInstance());
                     break;
                 case 1:
+                    exit = true;
                     adoptionMenu(pet);
                     break;
                 default:
                     con.print("Opción inválida, intente nuevamente");
+                    break;
             }
-
         } while (!exit);
     }
 
@@ -227,17 +252,32 @@ public class Menu {
         } while (!con.question("¿Es correcta? En caso contrario se volverá a preguntar."));
 
         try {
-            Ticket ticket = Store.createPetAdoption(new Client(name, LocalDate.parse(birthdate), address), pet);
+            Ticket ticket = store.createPetAdoption(new Client(name, LocalDate.parse(birthdate), address), pet);
             con.print(ticket.toString());
+            con.print("En 5 segundos se lo redirigirá al menú principal.");
             con.sleep(5);
         }
-        catch (ExoticPetException e) {
+        catch (DateTimeParseException e) {
+            con.print("Fecha de nacimiento inválida, el formato deseado es aaaa-mm-dd. Por ejemplo: 2022-12-18 Argentina campeón del mundo.");
+            adoptionMenu(pet);
+        }
+        catch (ExoticPetException | InterruptedException e) {
             con.print(e.getMessage());
         }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
+        catch (Exception e) {
+            con.print("Error al generar adopción en este momento. Porfavor, intentelo más tarde o realice la adopción manual.");
+            petMenu();
+        }
+        finally {
             mainMenu(Employee.getInstance());
         }
+    }
+
+    private void adoptionHistory() {
+        Console con = new Console("Historial de adopciones");
+        do {
+            con.printPetHistory(store.getClients());
+        } while (!con.question(""));
+        mainMenu(Employee.getInstance());
     }
 }

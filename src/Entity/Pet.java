@@ -10,7 +10,6 @@ public abstract class Pet {
     private LocalDate birthdate;
     private String color;
     private Double weight;
-
     protected String careRecommendation;
     protected KindE kind;
     protected boolean isExotic;

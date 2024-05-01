@@ -1,6 +1,7 @@
 package Entity;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Ticket {
     private LocalDateTime created;
@@ -27,21 +28,21 @@ public class Ticket {
                 -----------------------------------------
                 TICKET DE ADOPCIÓN
                 -----------------------------------------
-                Fecha y Hora: \{ this.created.toString() }
+                Fecha y hora: \{ this.created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")) }
 
-                Datos del Adoptante:
+                Datos del adoptante:
                 Nombre: \{ this.client.getName() }
                 Edad: \{ this.client.getAge() }
                 Dirección: \{ this.client.getAddress() }
 
-                Datos de la Mascota:
+                Datos de la mascota:
                 Nombre: \{ this.pet.getName() }
-                Fecha de Nacimiento: \{ this.pet.getBirthdate().toString() }
+                Fecha de nacimiento: \{ this.pet.getBirthdate().toString() }
                 Peso: \{ this.pet.getWeight() }
                 Especie: \{ this.pet.getKind().toString() }
-                Recomendaciones de Cuidado: \{ this.pet.getCareRecommendation() }
+                Recomendaciones de cuidado: \{ this.pet.getCareRecommendation() }
 
-                Empleado Encargado:
+                Empleado encargado:
                 Nombre: \{ this.employee.getName() }
                 Cargo: \{ this.employee.getRole() }
                 -----------------------------------------

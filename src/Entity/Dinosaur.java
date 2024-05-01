@@ -8,5 +8,6 @@ public class Dinosaur extends Pet {
         super(name, birthdate, color, weight);
         isExotic = true;
         kind = KindE.DINOSAUR;
+        careRecommendation = "Asegurarse de ser atleta olímpico de carreras a pié, ya que si el dinosáurio tiene hambre vas a tener que salir corriendo. \uD83E\uDD95";
     }
 }

@@ -4,7 +4,6 @@ public class Employee {
     private static Employee instance;
     private String name;
     private String lastName;
-
     private String role;
     private String age;
 
@@ -32,6 +31,12 @@ public class Employee {
 
     public String getRole() {
         return this.role;
+    }
+    public String getLastName() {
+        return this.lastName;
+    }
+    public String getAge() {
+        return age;
     }
 
     @Override

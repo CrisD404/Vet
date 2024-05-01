@@ -32,6 +32,8 @@ public class Client {
         this.ticket = ticket;
     }
 
+    public Ticket getTicket() { return ticket; };
+
     public void setPet(Pet pet) {
         this.pet = pet;
     }

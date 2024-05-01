@@ -1,5 +1,6 @@
 package Console;
 
+import Entity.Client;
 import Entity.Pet;
 
 import java.io.IOException;
@@ -45,6 +46,18 @@ public class Console {
         }
     }
 
+    public void printPetHistory(List<Client> clients) {
+        this.print("-----------------------------------------------------------------------------");
+        System.out.printf("%20s %20s %20s", "NOMBRE", "ESPECIE", "ADOPTADO POR");
+        this.ln()
+                .print("-----------------------------------------------------------------------------");
+        for (Client client : clients) {
+            System.out.format("%20s %20s %20s", client.getPet().getName(), client.getPet().getKind().toString(), client.getName());
+            this.ln()
+                    .print("-----------------------------------------------------------------------------");
+        }
+    }
+
     public void printPetPresentation(Pet pet) {
         this.print("   /\\_/")
                 .print("  / o o \\   "+ "¡Hola!")
@@ -53,7 +66,8 @@ public class Console {
                 .ln()
                 .print(STR."Nací el \{pet.getBirthdate().toString()}, tengo \{pet.getAge()} añitos.")
                 .print(STR."Mi piél es de color \{pet.getColor()}")
-                .print(STR."La última vez que me subí a una balanza pesaba \{pet.getWeight()}").ln();
+                .print(STR."La última vez que me subí a una balanza pesaba \{pet.getWeight()}").ln()
+                .print(STR."Recomendaciones de cuidado: \{pet.getCareRecommendation()}").ln();
     }
 
     public Console ln() {

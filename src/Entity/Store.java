@@ -10,10 +10,11 @@ import java.util.stream.Collectors;
 import Exception.ExoticPetException;
 import Exception.IllegalPetException;
 import Enum.KindE;
+import Interface.AdoptionManagementI;
 
-public class Store {
-    private List<Pet> pets = new ArrayList<>();
-    private List<Client> clients = new ArrayList<>();
+public class Store implements AdoptionManagementI {
+    List<Pet> pets = new ArrayList<>();
+    List<Client> clients = new ArrayList<>();
 
     public List<Pet> showAvaiblePets(Predicate<Pet> filter) {
         if (filter == null) return pets;

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class Menu {
-    Store store = new Store();
+    private final Store store = new Store();
     public Menu() {
         try {
             // Se hardcodean mascotas para mostrar funcionalidad.
@@ -38,19 +38,26 @@ public class Menu {
         String name;
         String lastName;
         String role;
-        String age;
+        String birthdate;
         do {
             con.print("Bienvenido, para continuar debe registrarse.");
 
             name = con.in("> Nombre");
             lastName = con.in("> Apellido");
             role = con.in("> Cargo");
-            age = con.in("> Edad");
+            birthdate = con.in("> Fecha de nacimiento (aaaa-mm-dd) - (calcularemos tu edad)");
 
             con.print("Se guardará la siguiente información del empleado:")
-                    .print(STR."Nombre: \{name} \nApellido: \{lastName} \nCargo: \{role} \nEdad: \{age}");
+                    .print(STR."Nombre: \{name} \nApellido: \{lastName} \nCargo: \{role} \nFecha de nacimiento: \{birthdate}");
         } while (!con.question("¿Es correcta? En caso contrario se volverá a preguntar."));
-        return Employee.getInstance(name, lastName, role, age);
+
+        try {
+            return Employee.getInstance(name, lastName, role, LocalDate.parse(birthdate));
+        }
+        catch (DateTimeParseException e) {
+            con.print("Fecha de nacimiento inválida, el formato deseado es aaaa-mm-dd. Por ejemplo: 2022-12-18 Argentina campeón del mundo.");
+            return register();
+        }
     }
 
     private void mainMenu(Employee employee) {
@@ -241,18 +248,20 @@ public class Menu {
     private void adoptionMenu(Pet pet) {
         Console con = new Console("Menú de adopción");
         String name;
+        String lastName;
         String birthdate;
         String address;
 
         do {
             con.print("Porfavor, ingrese los datos del adoptante").ln();
             name = con.in("> Nombre");
+            lastName = con.in("> Apellido");
             birthdate = con.in("> Fecha de nacimiento (aaaa-mm-dd)");
             address = con.in("> Dirección");
         } while (!con.question("¿Es correcta? En caso contrario se volverá a preguntar."));
 
         try {
-            Ticket ticket = store.createPetAdoption(new Client(name, LocalDate.parse(birthdate), address), pet);
+            Ticket ticket = store.createPetAdoption(new Client(name, lastName, LocalDate.parse(birthdate), address), pet);
             con.print(ticket.toString());
             con.print("En 5 segundos se lo redirigirá al menú principal.");
             con.sleep(5);

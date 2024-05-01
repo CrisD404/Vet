@@ -9,30 +9,37 @@ import java.util.Scanner;
 
 public class Console {
     private final Scanner scanner = new Scanner(System.in);
+
     public Console(String title) {
         this.clear();
-        System.out.println(title);
-        System.out.println("-----------------------------------");
+        this.buildHeader(title);
+    }
+
+    private void buildHeader(String title) {
+        int boxWidth = 40;
+        int spacesBeforeTitle = (boxWidth - title.length()) / 2;
+        int spacesAfterTitle = boxWidth - title.length() - spacesBeforeTitle;
+        this.print("┌────────────────────────────────────────┐");
+        this.print(STR."|\{" ".repeat(spacesBeforeTitle)}\{title}\{" ".repeat(spacesAfterTitle)}|");
+        this.print("└────────────────────────────────────────┘");
     }
 
     public void clear() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        }
-        catch (IOException | InterruptedException e) {
-            this.ln().ln();
-        }
+        String RESET = "\u001B[0m";
+        String WHITE = "\u001B[37m";
+        this.print(WHITE + "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" + RESET);
     }
 
     public Console print(String text) {
-        System.out.println(text);
+        String PURPLE = "\u001B[35m";
+        System.out.println(PURPLE +text);
         return this;
     }
 
     public void printPetPresentation(List<Pet> pets) {
         this.print("   /\\_/")
                 .print("  / o o \\   "+ "Cantidad de mascotas")
-                .print(" (   \"   )  "+ "disponibles:" + pets.size())
+                .print(" (   \"   )  "+ "disponibles: " + pets.size())
                 .print("  \\~(*)~/");
 
         this.print("-----------------------------------------------------------------------------");
@@ -93,9 +100,4 @@ public class Console {
     public void sleep(int seconds) throws InterruptedException {
         Thread.sleep(seconds* 1000L);
     }
-    public void close() {
-        this.scanner.close();
-    }
-
-    //TODO: PRINT ENUM OPTIONS
 }

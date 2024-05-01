@@ -28,7 +28,7 @@ public class Ticket {
                 -----------------------------------------
                 TICKET DE ADOPCIÓN
                 -----------------------------------------
-                Fecha y hora: \{ this.created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")) }
+                Fecha y hora: \{ this.created.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) }
 
                 Datos del adoptante:
                 Nombre: \{ this.client.getName() }

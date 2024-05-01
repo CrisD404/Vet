@@ -1,22 +1,26 @@
 package Entity;
 
-public class Employee {
+import Interface.Person;
+
+import java.time.LocalDate;
+
+public class Employee implements Person {
     private static Employee instance;
     private String name;
     private String lastName;
+    private LocalDate birthdate;
     private String role;
-    private String age;
 
-    private Employee(String name, String lastName, String role, String age) {
+    private Employee(String name, String lastName, String role, LocalDate birthdate) {
         this.name = name;
         this.lastName = lastName;
         this.role = role;
-        this.age = age;
+        this.birthdate = birthdate;
     }
 
-    public static Employee getInstance(String name, String lastName, String role, String age) {
+    public static Employee getInstance(String name, String lastName, String role, LocalDate birthdate) {
         if(instance == null) {
-            instance = new Employee(name, lastName, role, age);
+            instance = new Employee(name, lastName, role, birthdate);
         }
         return instance;
     }
@@ -35,12 +39,14 @@ public class Employee {
     public String getLastName() {
         return this.lastName;
     }
-    public String getAge() {
-        return age;
+
+    @Override
+    public LocalDate getBirthdate() {
+        return this.birthdate;
     }
 
     @Override
     public String toString() {
-        return STR."Nombre: \{this.name} \nApellido: \{this.lastName} \nEdad \{this.age}";
+        return STR."Nombre: \{this.getName()} \nApellido: \{this.getLastName()} \nEdad \{this.getAge()}";
     }
 }

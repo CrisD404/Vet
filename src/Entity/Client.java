@@ -1,27 +1,38 @@
 package Entity;
 
+import Interface.Person;
+
 import java.time.LocalDate;
 import java.time.Period;
 
-public class Client {
+public class Client implements Person {
     private String name;
+    private String lastName;
     private LocalDate birthdate;
     private String address;
     private Ticket ticket;
     private Pet pet;
 
-    public Client(String name, LocalDate birthdate, String address) {
+    public Client(String name, String lastName, LocalDate birthdate, String address) {
         this.name = name;
+        this.lastName = lastName;
         this.birthdate = birthdate;
         this.address = address;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
-    public int getAge() {
-        return Period.between(birthdate, LocalDate.now()).getYears();
+    @Override
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    @Override
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
     public String getAddress() {
